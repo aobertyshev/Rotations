@@ -1,0 +1,6 @@
+## Title: Rotations
+## APIVersion: 100035
+## SavedVariables: Rotations
+## DependsOn: LibAddonMenu-2.0
+
+Rotations.lua
