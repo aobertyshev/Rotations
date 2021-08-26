@@ -4,6 +4,12 @@
         <TopLevelControl name="RotationsQueueControl" layer="4">
             <OnUpdate>Rotations.OnUpdate(self, time)</OnUpdate>
             <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+            <Controls>
+				<Texture name="$(parent)Alert">
+					<Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" />
+					<Dimensions x="100" y="100" />
+				</Texture>
+            </Controls>
         </TopLevelControl>
     </Controls>
 </GuiXml>
