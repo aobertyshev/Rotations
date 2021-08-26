@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GuiXml >
+    <Controls>
+        <TopLevelControl name="RotationsQueueControl" layer="4">
+            <OnUpdate>Rotations.OnUpdate(self, time)</OnUpdate>
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>
