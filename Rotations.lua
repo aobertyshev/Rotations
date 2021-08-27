@@ -70,7 +70,7 @@ function Rotations.OnUpdate(self, time)
 	local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
 	RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
 	RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
-	RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.5 or 0)
+	RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.75 or 0)
 end
 
 function Rotations.ShouldCastThisAbility(abilityId)
