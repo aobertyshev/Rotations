@@ -3,12 +3,17 @@
     <Controls>
         <TopLevelControl name="RotationsQueueControl" layer="4">
             <OnUpdate>Rotations.OnUpdate(self, time)</OnUpdate>
-            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetY="-200" offsetX="-50"/>
             <Controls>
 				<Texture name="$(parent)Alert">
 					<Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" />
 					<Dimensions x="100" y="100" />
 				</Texture>
+				
+				<Label name="$(parent)Key" width="200" height="25" font="ZoFontWinH3" inheritAlpha="true"  color="FFFFFF"
+					wrapMode="TRUNCATE" verticalAlignment="TOP" horizontalAlignment="CENTER"  text="5">
+				  <Anchor point="TOP" relativeTo="$(parent)" relativePoint="TOP" offsetX="90"/>
+				</Label>
             </Controls>
         </TopLevelControl>
     </Controls>

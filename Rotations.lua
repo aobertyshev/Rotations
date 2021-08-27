@@ -1,34 +1,76 @@
 Rotations = Rotations or {}
 Rotations.name = "Rotations"
-Rotations.Timers = {}
+Rotations.AbilityTimers = {}
+Rotations.AbilityKeyMap = {}
+Rotations.AbilityBars = {}
 
 Rotations.AdditionalSkillDurations = {
-    --	concealed weapon
-    [25267] = 0,
-
     --	barbed trap (reapply every 16 sec due to 2 sec arming)
     [40382] = 16,
-
-    --siphoning attacks
-    --[36935] = 55,
 }
 
 function Rotations.OnUpdate(self, time)
 	--todo rework
+	local activeBar = GetActiveWeaponPairInfo()
 	for i = 3, 7 do
 		local abilityId = GetSlotBoundId(i)
-		if Rotations.Timers[abilityId] == nil then
-			Rotations.Timers[abilityId] = 0
-		end
+		Rotations.AbilityKeyMap[abilityId] = i - 2
+		Rotations.AbilityTimers[abilityId] = Rotations.AbilityTimers[abilityId] or 0
+		Rotations.AbilityBars[abilityId] = activeBar
 	end
-	local abilityToCastNext = -1
+	
+	Rotations.ActivePlayerBuffs = {}
+    local numberOfPlayerBuffs = GetNumBuffs("player")
+    for i = 0, numberOfPlayerBuffs do
+        local buffName, _, _, _, stackCount, _, _, _, _, _, abilityId, _ = GetUnitBuffInfo("player", i)
+        if abilityId == 61920 then
+            --Merciless Resolve stack
+            if stackCount >= 4 then
+				Rotations.ActivePlayerBuffs[abilityId] = true
+            end
+        else
+            Rotations.ActivePlayerBuffs[abilityId] = true
+        end
+    end
+	
+	--merciless resolve proc
+	if Rotations.ActivePlayerBuffs[61920] == nil then
+		Rotations.AbilityTimers[61930] = nil
+	else
+		Rotations.AbilityTimers[61930] = 0
+	end
+
+	local abilityIdToCastNext = -1
 	for k, v in pairs(Rotations.Target) do
-		if Rotations.Timers[v] ~= nil and Rotations.Timers[v] < time then
-			abilityToCastNext = v
+		if (Rotations.AbilityTimers[v] ~= nil) and (Rotations.AbilityTimers[v] < time) and Rotations.ShouldCastThisAbility(v) then
+			abilityIdToCastNext = v
 			break
 		end
 	end
-	RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityToCastNext))
+	
+	--no dots left to cast
+	if abilityIdToCastNext == -1 then
+		for k, v in pairs(Rotations.Spammables) do
+			if Rotations.ShouldCastThisAbility(v) then
+				abilityIdToCastNext = v
+				break
+			end
+		end
+	end
+	
+	local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
+	RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
+	RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
+	RotationsQueueControlKey:SetColor(1, 1, abilityToCastIsOnDifferentBar and 0 or 1, 1)
+end
+
+function Rotations.ShouldCastThisAbility(abilityId)
+	local hpPercentToDropAbility = Rotations.SkillsToDropAtHpPercent[abilityId]
+	if hpPercentToDropAbility == nil then
+		return true
+	end
+	local currentEnemyHealth, maxEnemyHealth, _ = GetUnitPower("reticleover", POWERTYPE_HEALTH)
+	return hpPercentToDropAbility < (currentEnemyHealth / maxEnemyHealth)
 end
 
 function Rotations.GetCorrectSkillSlot(slotNum)
@@ -44,7 +86,7 @@ function Rotations.OnActionSlotAbilityUsed(eventCode, slotNum)
     if Rotations.AdditionalSkillDurations[abilityId] ~= nil then
         duration = Rotations.AdditionalSkillDurations[abilityId]
     end
-    Rotations.Timers[abilityId] = (GetGameTimeMilliseconds() / 1000) + duration
+    Rotations.AbilityTimers[abilityId] = (GetGameTimeMilliseconds() / 1000) + duration
 end
 
 function Rotations:Initialize()
