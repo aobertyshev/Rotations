@@ -3,16 +3,19 @@
     <Controls>
         <TopLevelControl name="RotationsQueueControl" layer="4">
             <OnUpdate>Rotations.OnUpdate(self, time)</OnUpdate>
-            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetY="-200" offsetX="-50"/>
+            <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER" offsetY="-200"/>
             <Controls>
 				<Texture name="$(parent)Alert">
-					<Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" />
+					<Anchor point="CENTER" relativeTo="$(parent)" relativePoint="CENTER" />
+					<Dimensions x="100" y="100" />
+				</Texture>
+				<Texture name="$(parent)BarSwap" textureFile="/esoui/art/treeicons/gamepad/progression_levelup_weaponswap.dds" alpha="0">
+					<Anchor point="CENTER" relativeTo="$(parent)" relativePoint="CENTER" />
 					<Dimensions x="100" y="100" />
 				</Texture>
 				
-				<Label name="$(parent)Key" width="200" height="25" font="ZoFontWinH3" inheritAlpha="true"  color="FFFFFF"
-					wrapMode="TRUNCATE" verticalAlignment="TOP" horizontalAlignment="CENTER"  text="5">
-				  <Anchor point="TOP" relativeTo="$(parent)" relativePoint="TOP" offsetX="90"/>
+				<Label name="$(parent)Key" width="100" height="100" font="ZoFontWinH1">
+				  <Anchor point="CENTER" relativeTo="$(parent)" relativePoint="CENTER"/>
 				</Label>
             </Controls>
         </TopLevelControl>

@@ -1,3 +1,12 @@
+--[[
+todo:
+custom rotations & LAM
+add more skills & classes
+show queue
+gcd tracker on an icon like https://www.esoui.com/downloads/info2627-GlobalCooldownMonitor.html
+show key more evidently
+]]
+
 Rotations = Rotations or {}
 Rotations.name = "Rotations"
 Rotations.AbilityTimers = {}
@@ -61,7 +70,7 @@ function Rotations.OnUpdate(self, time)
 	local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
 	RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
 	RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
-	RotationsQueueControlKey:SetColor(1, 1, abilityToCastIsOnDifferentBar and 0 or 1, 1)
+	RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.5 or 0)
 end
 
 function Rotations.ShouldCastThisAbility(abilityId)
@@ -71,10 +80,6 @@ function Rotations.ShouldCastThisAbility(abilityId)
 	end
 	local currentEnemyHealth, maxEnemyHealth, _ = GetUnitPower("reticleover", POWERTYPE_HEALTH)
 	return hpPercentToDropAbility < (currentEnemyHealth / maxEnemyHealth)
-end
-
-function Rotations.GetCorrectSkillSlot(slotNum)
-    return (GetActiveWeaponPairInfo() == 2) and (slotNum + 5) or slotNum
 end
 
 function Rotations.OnActionSlotAbilityUsed(eventCode, slotNum)

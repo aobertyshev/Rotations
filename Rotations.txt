@@ -1,4 +1,4 @@
-## Title: Rotations
+## Title: Helix Rotations
 ## APIVersion: 101031
 
 priorityLists/default.lua
