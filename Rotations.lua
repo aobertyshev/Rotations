@@ -67,10 +67,23 @@ function Rotations.OnUpdate(self, time)
 		end
 	end
 	
-	local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
-	RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
-	RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
-	RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.75 or 0)
+    local isUnitInReticleInvulnerable = GetUnitAttributeVisualizerEffectInfo("reticleover", ATTRIBUTE_VISUAL_UNWAVERING_POWER, STAT_MITIGATION, ATTRIBUTE_HEALTH, POWERTYPE_HEALTH)
+    local isEnemyInReticle =
+        DoesUnitExist("reticleover") 
+		and IsUnitAttackable("reticleover")
+		and (not IsUnitDead("reticleover"))
+		and (not AreUnitsCurrentlyAllied("player", "reticleover"))
+        and (not isUnitInReticleInvulnerable)
+		
+	if isEnemyInReticle then
+		RotationsQueueControl:SetAlpha(1)
+		local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
+		RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
+		RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
+		RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.75 or 0)
+	else
+		RotationsQueueControl:SetAlpha(0)
+	end
 end
 
 function Rotations.ShouldCastThisAbility(abilityId)
