@@ -8,21 +8,16 @@ Rotations.Target = {
 	39052,			--	Weapon		-	Destruction Staff	-	Unstable Wall of Elements
 
 	36049,			--	Nightblade	-	Shadow				-	Twisting Path
-	24328,			--	Sorcerer	-	Daedric Summoning	-	Daedric Prey
-	114716,			--	Sorcerer	-	Dark Magic			-	Crystal Shards Proc
-	42028,			--	Guild		-	Undaunted			-	Mystic Orb
 	35434,			--	Nightblade	-	Shadow				-	Dark Shade
 	40382,			--	Guild		-	Fighters' Guild		-	Barbed trap
 	36943,			--	Nightblade	-	Siphoning			-	Debilitate
-	77182,			--	Sorcerer	-	Daedric Summoning	-	Summon Volatile Familiar
 	40457,			--	Guild		-	Mages Guild			-	Degeneration
 	36935			--	Nightblade	-	Siphoning			-	Siphoning Attacks
 }
 
 Rotations.Spammables = {
 	25267,			--	Nightblade	-	Shadow				-	Concealed Weapon
-	34851,			--	Nightblade	-	Assassination		-	Impale
-	46324			--	Sorcerer	-	Dark Magic			-	Crystal Shards
+	34851			--	Nightblade	-	Assassination		-	Impale
 }
 
 Rotations.SkillsToDropAtHpPercent = {

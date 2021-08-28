@@ -16,6 +16,8 @@ Rotations.AbilityBars = {}
 Rotations.AdditionalSkillDurations = {
     --	barbed trap (reapply every 16 sec due to 2 sec arming)
     [40382] = 16,
+	--	volatile familiar
+	[77182] = 10
 }
 
 function Rotations.OnUpdate(self, time)
@@ -35,6 +37,7 @@ function Rotations.OnUpdate(self, time)
 	local activeBar = GetActiveWeaponPairInfo()
 	for i = 3, 7 do
 		local abilityId = GetSlotBoundId(i)
+		--d(abilityId)
 		Rotations.AbilityKeyMap[abilityId] = i - 2
 		Rotations.AbilityTimers[abilityId] = Rotations.AbilityTimers[abilityId] or 0
 		Rotations.AbilityBars[abilityId] = activeBar
@@ -56,11 +59,17 @@ function Rotations.OnUpdate(self, time)
     end
 	
 	--clear merciless resolve proc if the buff is absent (it expired or was just casted)
-	--Rotations.AbilityTimers[61930] = (Rotations.ActivePlayerBuffs[61920] == nil) and nil or 0
 	if (Rotations.ActivePlayerBuffs[61920] == nil) then
 		Rotations.AbilityTimers[61930] = nil
 	else
 		Rotations.AbilityTimers[61930] = 0
+	end
+	
+	--clear crystal shards proc if the buff is absent (it expired or was just casted)
+	if (Rotations.ActivePlayerBuffs[46327] == nil) then
+		Rotations.AbilityTimers[114716] = nil
+	else
+		Rotations.AbilityTimers[114716] = 0
 	end
 	
 	--procs keys
@@ -81,7 +90,9 @@ function Rotations.OnUpdate(self, time)
 	--no dots left to cast
 	if abilityIdToCastNext == -1 then
 		for k, v in pairs(Rotations.Spammables) do
-			if not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent) then
+			if (Rotations.AbilityKeyMap[v] ~= nil)	--skill is present in the skillbar
+				and (not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent))
+			then
 				abilityIdToCastNext = v
 				break
 			end
