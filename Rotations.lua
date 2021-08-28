@@ -19,7 +19,19 @@ Rotations.AdditionalSkillDurations = {
 }
 
 function Rotations.OnUpdate(self, time)
-	--todo rework
+    local isUnitInReticleInvulnerable = GetUnitAttributeVisualizerEffectInfo("reticleover", ATTRIBUTE_VISUAL_UNWAVERING_POWER, STAT_MITIGATION, ATTRIBUTE_HEALTH, POWERTYPE_HEALTH)
+    local isEnemyInReticle =
+        DoesUnitExist("reticleover") 
+		and IsUnitAttackable("reticleover")
+		and (not IsUnitDead("reticleover"))
+		and (not AreUnitsCurrentlyAllied("player", "reticleover"))
+        and (not isUnitInReticleInvulnerable)
+	local reticleEnemyHpPercent = 0
+	if isEnemyInReticle then
+		local currentEnemyHealth, maxEnemyHealth, effectiveEnemyMaxHealth = GetUnitPower("reticleover", POWERTYPE_HEALTH)
+		reticleEnemyHpPercent = currentEnemyHealth / maxEnemyHealth
+	end
+	
 	local activeBar = GetActiveWeaponPairInfo()
 	for i = 3, 7 do
 		local abilityId = GetSlotBoundId(i)
@@ -32,6 +44,7 @@ function Rotations.OnUpdate(self, time)
     local numberOfPlayerBuffs = GetNumBuffs("player")
     for i = 0, numberOfPlayerBuffs do
         local buffName, _, _, _, stackCount, _, _, _, _, _, abilityId, _ = GetUnitBuffInfo("player", i)
+		--d(abilityId .. ' ' .. buffName)
         if abilityId == 61920 then
             --Merciless Resolve stack
             if stackCount >= 4 then
@@ -42,16 +55,24 @@ function Rotations.OnUpdate(self, time)
         end
     end
 	
-	--merciless resolve proc
-	if Rotations.ActivePlayerBuffs[61920] == nil then
+	--clear merciless resolve proc if the buff is absent (it expired or was just casted)
+	--Rotations.AbilityTimers[61930] = (Rotations.ActivePlayerBuffs[61920] == nil) and nil or 0
+	if (Rotations.ActivePlayerBuffs[61920] == nil) then
 		Rotations.AbilityTimers[61930] = nil
 	else
 		Rotations.AbilityTimers[61930] = 0
 	end
+	
+	--procs keys
+	--merciless resolve
+	Rotations.AbilityKeyMap[61930] = Rotations.AbilityKeyMap[61919]
 
 	local abilityIdToCastNext = -1
 	for k, v in pairs(Rotations.Target) do
-		if (Rotations.AbilityTimers[v] ~= nil) and (Rotations.AbilityTimers[v] < time) and Rotations.ShouldCastThisAbility(v) then
+		if (Rotations.AbilityTimers[v] ~= nil) 
+			and (Rotations.AbilityTimers[v] < time) 
+			and not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
+		then
 			abilityIdToCastNext = v
 			break
 		end
@@ -60,22 +81,14 @@ function Rotations.OnUpdate(self, time)
 	--no dots left to cast
 	if abilityIdToCastNext == -1 then
 		for k, v in pairs(Rotations.Spammables) do
-			if Rotations.ShouldCastThisAbility(v) then
+			if not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent) then
 				abilityIdToCastNext = v
 				break
 			end
 		end
 	end
-	
-    local isUnitInReticleInvulnerable = GetUnitAttributeVisualizerEffectInfo("reticleover", ATTRIBUTE_VISUAL_UNWAVERING_POWER, STAT_MITIGATION, ATTRIBUTE_HEALTH, POWERTYPE_HEALTH)
-    local isEnemyInReticle =
-        DoesUnitExist("reticleover") 
-		and IsUnitAttackable("reticleover")
-		and (not IsUnitDead("reticleover"))
-		and (not AreUnitsCurrentlyAllied("player", "reticleover"))
-        and (not isUnitInReticleInvulnerable)
 		
-	if isEnemyInReticle then
+	if isEnemyInReticle and abilityIdToCastNext ~= -1 then
 		RotationsQueueControl:SetAlpha(1)
 		local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
 		RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
@@ -86,13 +99,12 @@ function Rotations.OnUpdate(self, time)
 	end
 end
 
-function Rotations.ShouldCastThisAbility(abilityId)
+function Rotations.ShouldDropAbilityDueToHpPercent(abilityId, reticleEnemyHpPercent)
 	local hpPercentToDropAbility = Rotations.SkillsToDropAtHpPercent[abilityId]
 	if hpPercentToDropAbility == nil then
-		return true
+		return false
 	end
-	local currentEnemyHealth, maxEnemyHealth, _ = GetUnitPower("reticleover", POWERTYPE_HEALTH)
-	return hpPercentToDropAbility < (currentEnemyHealth / maxEnemyHealth)
+	return reticleEnemyHpPercent <= hpPercentToDropAbility
 end
 
 function Rotations.OnActionSlotAbilityUsed(eventCode, slotNum)
@@ -107,8 +119,20 @@ function Rotations.OnActionSlotAbilityUsed(eventCode, slotNum)
     Rotations.AbilityTimers[abilityId] = (GetGameTimeMilliseconds() / 1000) + duration
 end
 
+function Rotations.OnPlayerActivated()
+	for i = 3, 7 do
+		for _, hotbarCategory in pairs({HOTBAR_CATEGORY_PRIMARY, HOTBAR_CATEGORY_BACKUP}) do
+			local abilityId = GetSlotBoundId(i, hotbarCategory)
+			Rotations.AbilityKeyMap[abilityId] = i - 2
+			Rotations.AbilityTimers[abilityId] = 0
+			Rotations.AbilityBars[abilityId] = (hotbarCategory == HOTBAR_CATEGORY_PRIMARY) and 1 or 2
+		end
+	end
+end
+
 function Rotations:Initialize()
     EVENT_MANAGER:RegisterForEvent(self.name, EVENT_ACTION_SLOT_ABILITY_USED, self.OnActionSlotAbilityUsed)
+    EVENT_MANAGER:RegisterForEvent(self.name, EVENT_PLAYER_ACTIVATED, self.OnPlayerActivated)
     EVENT_MANAGER:UnregisterForEvent(self.name, EVENT_ADD_ON_LOADED)
 end
 
