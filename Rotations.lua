@@ -6,7 +6,6 @@ show queue
 gcd tracker on an icon like https://www.esoui.com/downloads/info2627-GlobalCooldownMonitor.html
 add support for ults
 add support for potions
-add support for custom keybinds
 add casting/channeling indicator (combined w/ gcd tracker)
 ]]
 
@@ -41,7 +40,7 @@ function Rotations.OnUpdate(self, time)
 	for i = 3, 7 do
 		local abilityId = GetSlotBoundId(i)
 		--d(abilityId)
-		Rotations.AbilityKeyMap[abilityId] = i - 2
+		Rotations.AbilityKeyMap[abilityId] = GetKeyName(GetActionBindingInfo(1, 2, i + 7, 1))
 		Rotations.AbilityTimers[abilityId] = Rotations.AbilityTimers[abilityId] or 0
 		Rotations.AbilityBars[abilityId] = activeBar
 	end
@@ -87,11 +86,24 @@ function Rotations.OnUpdate(self, time)
 	Rotations.AbilityKeyMap[114716] = Rotations.AbilityKeyMap[46324]
 
 	local abilityIdToCastNext = -1
+
+	--[[
+    local quickSlotId = GetCurrentQuickslot()
+	local quickSlotAbilityId = GetSlotBoundId(quickSlotId)
+    if (quickSlotAbilityId ~= 0) and (GetSlotItemCount(quickSlotId) > 0) then
+        quickSlotCooldown, _ = GetSlotCooldownInfo(quickSlotId)
+		if quickSlotCooldown == 0 then
+			abilityIdToCastNext = quickSlotAbilityId
+		end
+    end
+	]]
 	
-	--if we have molten whip and 3 stacks of seething fury
-	if (Rotations.AbilityKeyMap[20805] ~= nil)
-		and (Rotations.ActivePlayerBuffs[122658]) then
-		abilityIdToCastNext = 20805
+	if abilityIdToCastNext == -1 then
+		--if we have molten whip and 3 stacks of seething fury
+		if (Rotations.AbilityKeyMap[20805] ~= nil)
+			and (Rotations.ActivePlayerBuffs[122658]) then
+			abilityIdToCastNext = 20805
+		end
 	end
 	
 	if abilityIdToCastNext == -1 then
@@ -153,7 +165,7 @@ function Rotations.OnPlayerActivated()
 	for i = 3, 7 do
 		for _, hotbarCategory in pairs({HOTBAR_CATEGORY_PRIMARY, HOTBAR_CATEGORY_BACKUP}) do
 			local abilityId = GetSlotBoundId(i, hotbarCategory)
-			Rotations.AbilityKeyMap[abilityId] = i - 2
+			Rotations.AbilityKeyMap[abilityId] = GetKeyName(GetActionBindingInfo(1, 2, i + 7, 1))
 			Rotations.AbilityTimers[abilityId] = 0
 			Rotations.AbilityBars[abilityId] = (hotbarCategory == HOTBAR_CATEGORY_PRIMARY) and 1 or 2
 		end
