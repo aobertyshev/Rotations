@@ -4,7 +4,10 @@ custom rotations & LAM
 add more skills & classes
 show queue
 gcd tracker on an icon like https://www.esoui.com/downloads/info2627-GlobalCooldownMonitor.html
-show key more evidently
+add support for ults
+add support for potions
+add support for custom keybinds
+add casting/channeling indicator (combined w/ gcd tracker)
 ]]
 
 Rotations = Rotations or {}
