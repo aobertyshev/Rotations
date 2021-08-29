@@ -1,6 +1,6 @@
 Rotations = Rotations or {}
 
-Rotations.Target = {
+Rotations.Dots = {
 	61919,			--	Nightblade	- 	Assassination		-	Merciless Resolve
 	61930,			--	Nightblade	-	Assassination		-	Merciless Resolve Proc
 	
@@ -53,6 +53,7 @@ Rotations.SkillsToDropAtHpPercent = {
 	[35434] = 0.05,	--	Nightblade	-	Shadow				-	Dark Shade
 	[40382] = 0.05,	--	Guild		-	Fighters' Guild		-	Barbed trap
 	[39053] = 0.05,	--	Weapon		-	Destruction Staff	-	Unstable Wall of Fire
+	[39052] = 0.05,	--	Weapon		-	Destruction Staff	-	Unstable Wall of Elements
 	[36049] = 0.05,	--	Nightblade	-	Shadow				-	Twisting Path
 	[21765] = 0.05	--	Templar		-	Dawn's Wrath		-	Purifying Light
 }

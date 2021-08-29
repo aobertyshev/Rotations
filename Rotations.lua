@@ -79,7 +79,7 @@ function Rotations.OnUpdate(self, time)
 	Rotations.AbilityKeyMap[114716] = Rotations.AbilityKeyMap[46324]
 
 	local abilityIdToCastNext = -1
-	for k, v in pairs(Rotations.Target) do
+	for k, v in pairs(Rotations.Dots) do
 		if (Rotations.AbilityTimers[v] ~= nil) 
 			and (Rotations.AbilityTimers[v] < time) 
 			and not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
