@@ -31,7 +31,7 @@ Rotations.Spammables = {
 	34851,			--	Nightblade	-	Assassination		-	Impale
 	46324,			--	Sorcerer	-	Dark Magic			-	Crystal Shards
 	26797,			--	Templar		-	Aedric Spear		-	Puncturing Sweeps
-	46324			--	Templar		-	Dawn's Wrath		-	Radiant Oppression
+	63046			--	Templar		-	Dawn's Wrath		-	Radiant Oppression
 }
 
 Rotations.SkillsToDropAtHpPercent = {

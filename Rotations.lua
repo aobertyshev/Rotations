@@ -75,6 +75,8 @@ function Rotations.OnUpdate(self, time)
 	--procs keys
 	--merciless resolve
 	Rotations.AbilityKeyMap[61930] = Rotations.AbilityKeyMap[61919]
+	--crystal shards
+	Rotations.AbilityKeyMap[114716] = Rotations.AbilityKeyMap[46324]
 
 	local abilityIdToCastNext = -1
 	for k, v in pairs(Rotations.Target) do
