@@ -47,13 +47,18 @@ function Rotations.OnUpdate(self, time)
     local numberOfPlayerBuffs = GetNumBuffs("player")
     for i = 0, numberOfPlayerBuffs do
         local buffName, _, _, _, stackCount, _, _, _, _, _, abilityId, _ = GetUnitBuffInfo("player", i)
-		--d(abilityId .. ' ' .. buffName)
+		--d(abilityId .. ' ' .. buffName .. ' ' .. stackCount)
         if abilityId == 61920 then
             --Merciless Resolve stack
             if stackCount >= 4 then
 				Rotations.ActivePlayerBuffs[abilityId] = true
             end
-        else
+        elseif abilityId == 122658 then
+			--Seething Fury stack
+			if stackCount == 3 then
+				Rotations.ActivePlayerBuffs[abilityId] = true
+			end
+		else
             Rotations.ActivePlayerBuffs[abilityId] = true
         end
     end
@@ -79,13 +84,22 @@ function Rotations.OnUpdate(self, time)
 	Rotations.AbilityKeyMap[114716] = Rotations.AbilityKeyMap[46324]
 
 	local abilityIdToCastNext = -1
-	for k, v in pairs(Rotations.Dots) do
-		if (Rotations.AbilityTimers[v] ~= nil) 
-			and (Rotations.AbilityTimers[v] < time) 
-			and not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
-		then
-			abilityIdToCastNext = v
-			break
+	
+	--if we have molten whip and 3 stacks of seething fury
+	if (Rotations.AbilityKeyMap[20805] ~= nil)
+		and (Rotations.ActivePlayerBuffs[122658]) then
+		abilityIdToCastNext = 20805
+	end
+	
+	if abilityIdToCastNext == -1 then
+		for k, v in pairs(Rotations.Dots) do
+			if (Rotations.AbilityTimers[v] ~= nil) 
+				and (Rotations.AbilityTimers[v] < time) 
+				and not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
+			then
+				abilityIdToCastNext = v
+				break
+			end
 		end
 	end
 	
