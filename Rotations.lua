@@ -7,6 +7,7 @@ gcd tracker on an icon like https://www.esoui.com/downloads/info2627-GlobalCoold
 add support for ults
 add support for potions
 add casting/channeling indicator (combined w/ gcd tracker)
+clear the skills that are not actually slotted
 ]]
 
 Rotations = Rotations or {}
@@ -19,7 +20,9 @@ Rotations.AdditionalSkillDurations = {
     --	barbed trap (reapply every 16 sec due to 2 sec arming)
     [40382] = 16,
 	--	volatile familiar
-	[77182] = 10
+	[77182] = 10,
+	--	channeled acceleration
+	[103706] = 34.7
 }
 
 function Rotations.OnUpdate(self, time)
