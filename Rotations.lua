@@ -85,17 +85,21 @@ function Rotations.OnUpdate(self, time)
     Rotations.AbilityKeyMap[114716] = Rotations.AbilityKeyMap[46324]
 
     local abilityIdToCastNext = -1
+	local iconToDisplay = ''
 
-    --[[
     local quickSlotId = GetCurrentQuickslot()
-	local quickSlotAbilityId = GetSlotBoundId(quickSlotId)
-    if (quickSlotAbilityId ~= 0) and (GetSlotItemCount(quickSlotId) > 0) then
+	local quickSlotItemCount = GetSlotItemCount(quickSlotId)
+    if (quickSlotItemCount ~= nil) and (quickSlotItemCount > 0) then
         quickSlotCooldown, _ = GetSlotCooldownInfo(quickSlotId)
 		if quickSlotCooldown == 0 then
-			abilityIdToCastNext = quickSlotAbilityId
+			--special abilityId for potions
+			abilityIdToCastNext = 0
+			local texture, _, _ = GetSlotTexture(quickSlotId)
+			iconToDisplay = texture
+			Rotations.AbilityBars[abilityIdToCastNext] = activeBar
 		end
     end
-	]]
+	
     if abilityIdToCastNext == -1 then
         --if we have molten whip and 3 stacks of seething fury
         if (Rotations.AbilityKeyMap[20805] ~= nil) and (Rotations.ActivePlayerBuffs[122658]) then
@@ -105,9 +109,8 @@ function Rotations.OnUpdate(self, time)
 
     if abilityIdToCastNext == -1 then
         for k, v in pairs(Rotations.Dots) do
-            if
-                (Rotations.AbilityTimers[v] ~= nil) and (Rotations.AbilityTimers[v] < time) and
-                    not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
+            if (Rotations.AbilityTimers[v] ~= nil) and (Rotations.AbilityTimers[v] < time) and
+				not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent)
              then
                 abilityIdToCastNext = v
                 break
@@ -118,21 +121,24 @@ function Rotations.OnUpdate(self, time)
     --no dots left to cast
     if abilityIdToCastNext == -1 then
         for k, v in pairs(Rotations.Spammables) do
-            if
-                (Rotations.AbilityKeyMap[v] ~= nil) and --skill is present in the skillbar
-                    (not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent))
+            if (Rotations.AbilityKeyMap[v] ~= nil) and --skill is present in the skillbar
+				(not Rotations.ShouldDropAbilityDueToHpPercent(v, reticleEnemyHpPercent))
              then
                 abilityIdToCastNext = v
                 break
             end
         end
     end
+	
+	if (iconToDisplay == '') then
+		iconToDisplay = GetAbilityIcon(abilityIdToCastNext)
+	end
 
     if isEnemyInReticle and abilityIdToCastNext ~= -1 then
         RotationsQueueControl:SetAlpha(1)
         local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
         RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
-        RotationsQueueControlAlert:SetTexture(GetAbilityIcon(abilityIdToCastNext))
+        RotationsQueueControlAlert:SetTexture(iconToDisplay)
         RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.75 or 0)
     else
         RotationsQueueControl:SetAlpha(0)
