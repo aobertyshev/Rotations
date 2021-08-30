@@ -15,10 +15,12 @@ Rotations.Dots = {
     24328, --	Sorcerer		-	Daedric Summoning	-	Daedric Prey
     114716, --	Sorcerer		-	Dark Magic			-	Crystal Shards Proc
     117749, --	Necromancer		-	Grave Lord			-	Stalking Blastbones
+    86015, --	Warden			-	Animal Companions	-	Deep Fissure
+    86169, --	Warden			-	Winter's Embrace	-	Winter's Revenge
     42028, --	Guild			-	Undaunted			-	Mystic Orb
     117850, --	Necromancer		-	Grave Lord			-	Avid Boneyard
     35434, --	Nightblade		-	Shadow				-	Dark Shade
-    40382, --	Guild			-	Fighters' Guild		-	Barbed trap
+    40382, --	Guild			-	Fighters Guild		-	Barbed trap
     103706, --	Guild			-	Psijic Order		-	Channeled Acceleration
     118726, --	Necromancer		-	Grave Lord			-	Skeletal Mage
     118763, --	Necromancer		-	Grave Lord			-	Detonating Siphon
@@ -26,10 +28,12 @@ Rotations.Dots = {
     40465, --	Guild			-	Mages Guild			-	Scalding Rune
     36943, --	Nightblade		-	Siphoning			-	Debilitate
     77182, --	Sorcerer		-	Daedric Summoning	-	Summon Volatile Familiar
+    86027, --	Warden			-	Animal Companions	-	Fetcher Infection
     40457, --	Guild			-	Mages Guild			-	Degeneration
     22259, --	Templar			-	Restoring Light		-	Ritual of Retribution
     36935, --	Nightblade		-	Siphoning			-	Siphoning Attacks
     22240, --	Templar			-	Restoring Light		-	Channeled Focus
+    86054, --	Warden			-	Animal Companions	-	Blue Betty
     21765 --	Templar			-	Dawn's Wrath		-	Purifying Light 			(low priority to make sure that at least 1 spammable gets casted after this)
 }
 
@@ -71,7 +75,7 @@ Rotations.SkillsToDropAtHpPercent = {
     [22240] = 0.05, --	Templar			-	Restoring Light		-	Channeled Focus
     [22259] = 0.05, --	Templar			-	Restoring Light		-	Ritual of Retribution
     [35434] = 0.05, --	Nightblade		-	Shadow				-	Dark Shade
-    [40382] = 0.05, --	Guild			-	Fighters' Guild		-	Barbed trap
+    [40382] = 0.05, --	Guild			-	Fighters Guild		-	Barbed trap
     [103706] = 0.05, --	Guild			-	Psijic Order		-	Channeled Acceleration
     [39053] = 0.05, --	Weapon			-	Destruction Staff	-	Unstable Wall of Fire
     [39052] = 0.05, --	Weapon			-	Destruction Staff	-	Unstable Wall of Elements
