@@ -14,10 +14,14 @@ Rotations.Dots = {
     36049, --	Nightblade		-	Shadow				-	Twisting Path
     24328, --	Sorcerer		-	Daedric Summoning	-	Daedric Prey
     114716, --	Sorcerer		-	Dark Magic			-	Crystal Shards Proc
+    117749, --	Necromancer		-	Grave Lord			-	Stalking Blastbones
     42028, --	Guild			-	Undaunted			-	Mystic Orb
+    117850, --	Necromancer		-	Grave Lord			-	Avid Boneyard
     35434, --	Nightblade		-	Shadow				-	Dark Shade
     40382, --	Guild			-	Fighters' Guild		-	Barbed trap
     103706, --	Guild			-	Psijic Order		-	Channeled Acceleration
+    118726, --	Necromancer		-	Grave Lord			-	Skeletal Mage
+    118763, --	Necromancer		-	Grave Lord			-	Detonating Siphon
     32710, --	Dragonknight	-	Earthen Heart		-	Eruption
     40465, --	Guild			-	Mages Guild			-	Scalding Rune
     36943, --	Nightblade		-	Siphoning			-	Debilitate
