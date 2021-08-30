@@ -33,6 +33,19 @@ Rotations.Dots = {
     21765 --	Templar			-	Dawn's Wrath		-	Purifying Light 			(low priority to make sure that at least 1 spammable gets casted after this)
 }
 
+Rotations.AdditionalSkillDurations = {
+    --	barbed trap (reapply every 16 sec due to 2 sec arming)
+    [40382] = 16,
+    --	volatile familiar
+    [77182] = 10,
+    --	channeled acceleration
+    [103706] = 34.7,
+	--	stalking blastbones
+	[117749] = 3,
+	--	scalding rune
+	[40465] = 12
+}
+
 Rotations.Spammables = {
     25267, --	Nightblade		-	Shadow				-	Concealed Weapon
     34835, --	Nightblade		-	Siphoning			-	Swallow Soul

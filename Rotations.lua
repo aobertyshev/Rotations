@@ -15,19 +15,6 @@ Rotations.AbilityTimers = {}
 Rotations.AbilityKeyMap = {}
 Rotations.AbilityBars = {}
 
-Rotations.AdditionalSkillDurations = {
-    --	barbed trap (reapply every 16 sec due to 2 sec arming)
-    [40382] = 16,
-    --	volatile familiar
-    [77182] = 10,
-    --	channeled acceleration
-    [103706] = 34.7,
-	--	stalking blastbones
-	[117749] = 3,
-	--	scalding rune
-	[40465] = 12
-}
-
 function Rotations.OnUpdate(self, time)
     local isUnitInReticleInvulnerable =
         GetUnitAttributeVisualizerEffectInfo(
