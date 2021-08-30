@@ -14,5 +14,5 @@ So far the only supported classes are MAGBLADE, MAGSORC, MAGPLAR and MAGDK with 
 
 You can contact me in-game @helixanon or via Discord Helix#4878.
 
-Tech demo:
-https://www.youtube.com/watch?v=XxsKZW-lVp8
+Tech demo v0.6:
+https://youtu.be/mSRwszsxSgM
