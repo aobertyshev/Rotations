@@ -53,11 +53,15 @@ Rotations.AdditionalSkillDurations = {
 Rotations.Spammables = {
     25267, --	Nightblade		-	Shadow				-	Concealed Weapon
     34835, --	Nightblade		-	Siphoning			-	Swallow Soul
-    34851, --	Nightblade		-	Assassination		-	Impale
     46324, --	Sorcerer		-	Dark Magic			-	Crystal Shards
     26797, --	Templar			-	Aedric Spear		-	Puncturing Sweeps
+    20805, --	Dragonknight	-	Ardent Flame		-	Molten Whip
+    103571, --	Guild			-	Psijic Order		-	Elemental Weapon
+    46356, --	Weapon			-	Destruction Staff	-	Force Pulse
+	
+	--	executes
     63046, --	Templar			-	Dawn's Wrath		-	Radiant Oppression
-    20805 --	Dragonknight	-	Ardent Flame		-	Molten Whip
+    34851 --	Nightblade		-	Assassination		-	Impale
 }
 
 Rotations.SkillsToDropAtHpPercent = {

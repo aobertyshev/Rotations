@@ -5,8 +5,6 @@ add more skills & classes
 show queue
 gcd tracker on an icon like https://www.esoui.com/downloads/info2627-GlobalCooldownMonitor.html
 add support for ults
-add support for potions
-add casting/channeling indicator (combined w/ gcd tracker)
 clear the skills that are not actually slotted
 ]]
 Rotations = Rotations or {}
@@ -86,6 +84,7 @@ function Rotations.OnUpdate(self, time)
 
     local abilityIdToCastNext = -1
 	local iconToDisplay = ''
+	local keyToDisplay = ''
 
     local quickSlotId = GetCurrentQuickslot()
 	local quickSlotItemCount = GetSlotItemCount(quickSlotId)
@@ -97,6 +96,7 @@ function Rotations.OnUpdate(self, time)
 			local texture, _, _ = GetSlotTexture(quickSlotId)
 			iconToDisplay = texture
 			Rotations.AbilityBars[abilityIdToCastNext] = activeBar
+			keyToDisplay = GetKeyName(GetActionBindingInfo(1, 2, 24, 1))
 		end
     end
 	
@@ -133,11 +133,15 @@ function Rotations.OnUpdate(self, time)
 	if (iconToDisplay == '') then
 		iconToDisplay = GetAbilityIcon(abilityIdToCastNext)
 	end
+	
+	if (keyToDisplay == '') then
+		keyToDisplay = Rotations.AbilityKeyMap[abilityIdToCastNext]
+	end
 
     if isEnemyInReticle and abilityIdToCastNext ~= -1 then
         RotationsQueueControl:SetAlpha(1)
         local abilityToCastIsOnDifferentBar = Rotations.AbilityBars[abilityIdToCastNext] ~= activeBar
-        RotationsQueueControlKey:SetText(Rotations.AbilityKeyMap[abilityIdToCastNext])
+        RotationsQueueControlKey:SetText(keyToDisplay)
         RotationsQueueControlAlert:SetTexture(iconToDisplay)
         RotationsQueueControlBarSwap:SetAlpha(abilityToCastIsOnDifferentBar and 0.75 or 0)
     else
